@@ -1,0 +1,45 @@
+name: 初始化字幕仓库 (Initialize Subtitle Repo)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+
+      - name: Checkout subtitle-repo-actions
+        uses: actions/checkout@v4
+        with:
+          repository: MontageSubs/subtitle-repo-actions
+          path: .actions
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run orchestration script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_ADMIN_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+          TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          SERPSTACK_API_KEY: ${{ secrets.SERPSTACK_API_KEY }}
+        run: |
+          python .actions/init/orchestrate.py \
+            --repo-name "${{ github.event.repository.name }}" \
+            --github-repository "${{ github.repository }}"
+
+      - name: Commit README
+        run: |
+          git config user.name "montagesubs-bot"
+          git config user.email "bot@montagesubs.github.io"
+          git add README.md
+          git diff --cached --quiet || git commit -m "chore: 自动初始化仓库信息 (auto-init repository metadata)"
+          git push
