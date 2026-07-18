@@ -14,10 +14,8 @@
 工作流会自动根据仓库名（`英文片名_年份` 格式）在 TMDB / 豆瓣检索影片信息，并重写本 README 为正式的项目主页。
 
 > [!NOTE]
-> 自动化流程需要仓库为公开状态才能正常读写仓库信息（组织级 secret 在免费版下默认不对私有仓库开放）。
-
-> [!NOTE]
-> 如果仓库名格式不正确，或未能在 TMDB 中匹配到对应影片，工作流会中止并将本 README 替换为对应的错误说明，请届时按提示删除并重新创建仓库。
+> - 自动化流程需要仓库为公开状态才能正常读写仓库信息
+> - 如果仓库名格式不正确，或未能在 TMDB 中匹配到对应影片，工作流会中止并将本 README 替换为对应的错误说明，请届时按提示删除并重新创建仓库
 
 ---
 
@@ -37,10 +35,8 @@ This is a subtitle repository just created from the template and has not yet bee
 The workflow will look up the title on TMDB / Douban based on the repository name (in `EnglishTitle_Year` format), then rewrite this README into the project's public homepage.
 
 > [!NOTE]
-> The automation needs the repository to be public to read/write repository metadata (on the Free plan, org-level secrets aren't available to private repos by default).
-
-> [!NOTE]
-> If the repository name format is invalid, or no matching title is found on TMDB, the workflow will abort and replace this README with the corresponding error message. Please delete and recreate the repository as instructed.
+> - The automation needs the repository to be public to read/write repository metadata
+> - If the repository name format is invalid, or no matching title is found on TMDB, the workflow will abort and replace this README with the corresponding error message. Please delete and recreate the repository as instructed
 
 ---
 
