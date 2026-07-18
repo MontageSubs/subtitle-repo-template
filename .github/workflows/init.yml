@@ -1,4 +1,4 @@
-name: 初始化字幕仓库 (Initialize Subtitle Repo)
+name: 初始化 (Initialize)
 
 on:
   workflow_dispatch: {}
