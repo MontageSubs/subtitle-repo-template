@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       force_init:
-        description: "强制初始化：忽略仓库当前是否已初始化，清空工作区（.git/.github 除外）后重新执行完整流程；若 TMDB 未找到匹配影片，则额外跳过命名校验，生成空白模板，标题/海报/简介需自行填写 / Force init: ignores whether the repo was already initialized, wipes the workspace (except .git/.github) and re-runs the full flow; if TMDB finds no match, also skips naming validation and generates a blank template, title/poster/synopsis must be filled manually"
+        description: "强制初始化：覆盖现有文件并重新初始化；未匹配时生成空白模板 / Force init: Overwrite files and re-initialize; generate blank template if no match"
         type: boolean
         default: false
 
