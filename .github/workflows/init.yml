@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       force_init:
-        description: "强制初始化：仅在 TMDB 未找到匹配影片时生效，跳过校验生成空白模板，标题/海报/简介需自行填写 / Force init: only takes effect when TMDB finds no match — skips validation and generates a blank template, title/poster/synopsis must be filled manually"
+        description: "强制初始化：忽略仓库当前是否已初始化，清空工作区（.git/.github 除外）后重新执行完整流程；若 TMDB 未找到匹配影片，则额外跳过命名校验，生成空白模板，标题/海报/简介需自行填写 / Force init: ignores whether the repo was already initialized, wipes the workspace (except .git/.github) and re-runs the full flow; if TMDB finds no match, also skips naming validation and generates a blank template, title/poster/synopsis must be filled manually"
         type: boolean
         default: false
 
@@ -39,7 +39,7 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_ACTOR_ID: ${{ github.actor_id }}
         run: |
-          python .actions/init/main.py \
+          python .actions/actions/init/main.py \
             --repo-name "${{ github.event.repository.name }}" \
             --github-repository "${{ github.repository }}" \
             ${{ github.event.inputs.force_init == 'true' && '--force-init' || '' }}
