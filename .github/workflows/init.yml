@@ -36,8 +36,10 @@ jobs:
           TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           SERPSTACK_API_KEY: ${{ secrets.SERPSTACK_API_KEY }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_ACTOR_ID: ${{ github.actor_id }}
         run: |
-          python .actions/init/orchestrate.py \
+          python .actions/init/main.py \
             --repo-name "${{ github.event.repository.name }}" \
             --github-repository "${{ github.repository }}" \
             ${{ github.event.inputs.force_init == 'true' && '--force-init' || '' }}
@@ -47,8 +49,6 @@ jobs:
           ACTOR: ${{ github.actor }}
           ACTOR_ID: ${{ github.actor_id }}
         run: |
-          # Attribute the commit to whoever triggered the workflow, not a bot.
-          # 提交归属于触发工作流的人，而非机器人账号。
           git config user.name "$ACTOR"
           git config user.email "${ACTOR_ID}+${ACTOR}@users.noreply.github.com"
           git add README.md
