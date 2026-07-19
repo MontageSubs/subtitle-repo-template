@@ -7,7 +7,7 @@
 1. **确认仓库名**：确保仓库名符合 `英文片名_年份` 格式（详见下方 [仓库命名规范](#仓库命名规范)），如不符合，请前往 **[Settings](../../settings)** 修改。
 2. **检查可见性**：检查页面顶部仓库名右侧的标签
    - 已显示 **Public** --> 进行第 3 步
-   - 显示 **Private** --> 点击 [此链接](../../settings#danger-zone) 进入 Danger Zone（或手动前往 **Settings → General → Danger Zone**），选择 **Change repository visibility** 更改为 **Public**
+   - 显示 **Private** --> 点击 [此链接](../../settings#danger-zone) 进入 Danger Zone（或手动前往 **Settings --> General --> Danger Zone**），选择 **Change repository visibility** 更改为 **Public**
 3. **触发初始化**：进入 **[Actions](../../actions/workflows/init.yml)** 页面 --> 选择 **"初始化 (Initialize)"** 工作流 --> 点击 **Run workflow** 运行（无需勾选强制选项）。
 
 ### 仓库命名规范
@@ -38,7 +38,7 @@ This is a subtitle repository created from a template and is awaiting initializa
 1. **Confirm Repository Name**: Ensure the repository name follows the `EnglishTitle_Year` format (see [Naming Conventions](#naming-conventions) below). If it does not, please update it in **[Settings](../../settings)**.
 2. **Check Visibility**: Check the label next to the repository name at the top of the page.
    - **Public** --> Proceed to Step 3.
-   - **Private** --> Click [this link](../../settings#danger-zone) to enter the Danger Zone (or manually navigate to **Settings → General → Danger Zone**) and set **Change repository visibility** to **Public**.
+   - **Private** --> Click [this link](../../settings#danger-zone) to enter the Danger Zone (or manually navigate to **Settings --> General --> Danger Zone**) and set **Change repository visibility** to **Public**.
 3. **Trigger Initialization**: Navigate to the **[Actions](../../actions/workflows/init.yml)** page --> select the **"初始化 (Initialize)"** workflow --> click **Run workflow** (the force option does not need to be checked).
 
 ### Naming Conventions
