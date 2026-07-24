@@ -7,6 +7,10 @@ on:
         description: "强制初始化：覆盖现有文件并重新初始化；未匹配时生成空白模板 / Force init: Overwrite files and re-initialize; generate blank template if no match"
         type: boolean
         default: false
+      manual_id:
+        description: "手动指定 TMDB/IMDb ID 或 URL（可选，留空则按仓库名自动搜索 TMDB）/ Optional manual TMDB/IMDb ID or URL"
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -36,15 +40,19 @@ jobs:
           TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           SERPSTACK_API_KEY: ${{ secrets.SERPSTACK_API_KEY }}
+          GOOGLE_LLM_TOKEN: ${{ secrets.GOOGLE_LLM_TOKEN }}
+          HUGGINGFACE_LLM_TOKEN: ${{ secrets.HUGGINGFACE_LLM_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_ACTOR_ID: ${{ github.actor_id }}
+          FORCE_INIT: ${{ github.event.inputs.force_init }}
+          MANUAL_ID: ${{ github.event.inputs.manual_id }}
         run: |
-          python .actions/actions/init/main.py \
-            --repo-name "${{ github.event.repository.name }}" \
-            --github-repository "${{ github.repository }}" \
-            ${{ github.event.inputs.force_init == 'true' && '--force-init' || '' }}
+          ARGS=(--repo-name "${{ github.event.repository.name }}" --github-repository "${{ github.repository }}")
+          if [ "$FORCE_INIT" = "true" ]; then ARGS+=(--force-init); fi
+          if [ -n "$MANUAL_ID" ]; then ARGS+=(--manual-id "$MANUAL_ID"); fi
+          python .actions/actions/init/main.py "${ARGS[@]}"
 
-      - name: Commit README
+      - name: Commit README and synopsis
         env:
           ACTOR: ${{ github.actor }}
           ACTOR_ID: ${{ github.actor_id }}
@@ -52,5 +60,6 @@ jobs:
           git config user.name "$ACTOR"
           git config user.email "${ACTOR_ID}+${ACTOR}@users.noreply.github.com"
           git add README.md
+          [ -d docs/synopsis ] && git add docs/synopsis
           git diff --cached --quiet || git commit -m "chore: auto-init repository metadata"
           git push
