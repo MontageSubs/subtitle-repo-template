@@ -46,6 +46,7 @@ jobs:
           GITHUB_ACTOR_ID: ${{ github.actor_id }}
           FORCE_INIT: ${{ github.event.inputs.force_init }}
           MANUAL_ID: ${{ github.event.inputs.manual_id }}
+          REPO_VARS_JSON: ${{ toJson(vars) }}
         run: |
           ARGS=(--repo-name "${{ github.event.repository.name }}" --github-repository "${{ github.repository }}")
           if [ "$FORCE_INIT" = "true" ]; then ARGS+=(--force-init); fi
