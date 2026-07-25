@@ -3,14 +3,14 @@ name: 剧情摘要 (Synopsis)
 on:
   workflow_dispatch:
     inputs:
-      force:
-        description: "强制覆盖 GLOSSARY.md（默认已存在则跳过）/ Force overwrite GLOSSARY.md (skipped by default if it exists)"
-        type: boolean
-        default: false
       manual_id:
         description: "手动指定 TMDB/IMDb ID 或 URL（可选，留空则从 README 现有信息读取）/ Optional manual TMDB/IMDb ID or URL"
         type: string
         default: ""
+      force:
+        description: "强制覆盖 GLOSSARY.md（默认已存在则跳过）/ Force overwrite GLOSSARY.md (skipped by default if it exists)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write

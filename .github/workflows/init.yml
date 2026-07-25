@@ -3,14 +3,14 @@ name: 初始化 (Initialize)
 on:
   workflow_dispatch:
     inputs:
-      force_init:
-        description: "强制初始化：覆盖现有文件并重新初始化；未匹配时生成空白模板 / Force init: Overwrite files and re-initialize; generate blank template if no match"
-        type: boolean
-        default: false
       manual_id:
         description: "手动指定 TMDB/IMDb ID 或 URL（可选，留空则按仓库名自动搜索 TMDB）/ Optional manual TMDB/IMDb ID or URL"
         type: string
         default: ""
+      force_init:
+        description: "强制初始化：覆盖现有文件并重新初始化；未匹配时生成空白模板 / Force init: Overwrite files and re-initialize; generate blank template if no match"
+        type: boolean
+        default: false
       dry_run:
         description: "跳过剧情摘要生成 / Skip synopsis generation"
         type: boolean
