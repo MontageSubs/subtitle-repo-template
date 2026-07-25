@@ -40,6 +40,7 @@ jobs:
           HUGGINGFACE_LLM_TOKEN: ${{ secrets.HUGGINGFACE_LLM_TOKEN }}
           FORCE: ${{ github.event.inputs.force }}
           MANUAL_ID: ${{ github.event.inputs.manual_id }}
+          REPO_VARS_JSON: ${{ toJson(vars) }}
         run: |
           ARGS=()
           if [ "$FORCE" = "true" ]; then ARGS+=(--force); fi
