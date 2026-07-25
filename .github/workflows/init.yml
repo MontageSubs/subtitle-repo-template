@@ -12,7 +12,7 @@ on:
         type: string
         default: ""
       dry_run:
-        description: "预览模式：仅检出代码，不执行任何操作 / Dry run: checkout only, perform no action"
+        description: "跳过剧情摘要生成 / Skip synopsis generation"
         type: boolean
         default: false
 
@@ -33,17 +33,14 @@ jobs:
           path: .actions
 
       - name: Relocate actions scripts outside the repo worktree
-        if: github.event.inputs.dry_run != 'true'
         run: mv .actions /tmp/actions
 
       - name: Set up Python
-        if: github.event.inputs.dry_run != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Run orchestration script
-        if: github.event.inputs.dry_run != 'true'
         id: orchestrate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -65,7 +62,6 @@ jobs:
           python /tmp/actions/actions/init/main.py "${ARGS[@]}"
 
       - name: Commit README
-        if: github.event.inputs.dry_run != 'true'
         env:
           ACTOR: ${{ github.actor }}
           ACTOR_ID: ${{ github.actor_id }}
