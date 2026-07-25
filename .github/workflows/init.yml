@@ -28,6 +28,9 @@ jobs:
           repository: MontageSubs/subtitle-repo-actions
           path: .actions
 
+      - name: Relocate actions scripts outside the repo worktree
+        run: mv .actions /tmp/actions
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -51,7 +54,7 @@ jobs:
           ARGS=(--repo-name "${{ github.event.repository.name }}" --github-repository "${{ github.repository }}")
           if [ "$FORCE_INIT" = "true" ]; then ARGS+=(--force-init); fi
           if [ -n "$MANUAL_ID" ]; then ARGS+=(--manual-id "$MANUAL_ID"); fi
-          python .actions/actions/init/main.py "${ARGS[@]}"
+          python /tmp/actions/actions/init/main.py "${ARGS[@]}"
 
       - name: Commit README and synopsis
         env:

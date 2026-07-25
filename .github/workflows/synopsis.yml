@@ -28,6 +28,9 @@ jobs:
           repository: MontageSubs/subtitle-repo-actions
           path: .actions
 
+      - name: Relocate actions scripts outside the repo worktree
+        run: mv .actions /tmp/actions
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -45,7 +48,7 @@ jobs:
           ARGS=()
           if [ "$FORCE" = "true" ]; then ARGS+=(--force); fi
           if [ -n "$MANUAL_ID" ]; then ARGS+=(--manual-id "$MANUAL_ID"); fi
-          python .actions/actions/synopsis/main.py "${ARGS[@]}"
+          python /tmp/actions/actions/synopsis/main.py "${ARGS[@]}"
 
       - name: Commit synopsis
         env:
