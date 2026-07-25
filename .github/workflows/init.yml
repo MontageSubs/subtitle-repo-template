@@ -11,6 +11,10 @@ on:
         description: "手动指定 TMDB/IMDb ID 或 URL（可选，留空则按仓库名自动搜索 TMDB）/ Optional manual TMDB/IMDb ID or URL"
         type: string
         default: ""
+      dry_run:
+        description: "预览模式：仅检出代码，不执行任何操作 / Dry run: checkout only, perform no action"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -29,14 +33,17 @@ jobs:
           path: .actions
 
       - name: Relocate actions scripts outside the repo worktree
+        if: github.event.inputs.dry_run != 'true'
         run: mv .actions /tmp/actions
 
       - name: Set up Python
+        if: github.event.inputs.dry_run != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Run orchestration script
+        if: github.event.inputs.dry_run != 'true'
         id: orchestrate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,6 +65,7 @@ jobs:
           python /tmp/actions/actions/init/main.py "${ARGS[@]}"
 
       - name: Commit README
+        if: github.event.inputs.dry_run != 'true'
         env:
           ACTOR: ${{ github.actor }}
           ACTOR_ID: ${{ github.actor_id }}
@@ -69,7 +77,7 @@ jobs:
           git push
 
       - name: Run synopsis pipeline
-        if: steps.orchestrate.outputs.rendered == 'true'
+        if: steps.orchestrate.outputs.rendered == 'true' && github.event.inputs.dry_run != 'true'
         env:
           TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
           GOOGLE_LLM_TOKEN: ${{ secrets.GOOGLE_LLM_TOKEN }}
@@ -84,7 +92,7 @@ jobs:
           python /tmp/actions/actions/synopsis/main.py "${ARGS[@]}"
 
       - name: Commit synopsis
-        if: steps.orchestrate.outputs.rendered == 'true'
+        if: steps.orchestrate.outputs.rendered == 'true' && github.event.inputs.dry_run != 'true'
         env:
           ACTOR: ${{ github.actor }}
           ACTOR_ID: ${{ github.actor_id }}
