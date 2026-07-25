@@ -57,6 +57,6 @@ jobs:
         run: |
           git config user.name "$ACTOR"
           git config user.email "${ACTOR_ID}+${ACTOR}@users.noreply.github.com"
-          git add docs/synopsis
+          git add docs/synopsis README.md
           git diff --cached --quiet || git commit -m "chore: refresh synopsis"
           git push
