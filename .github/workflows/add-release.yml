@@ -1,0 +1,55 @@
+name: 新增 Release (Add Release)
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_web:
+        description: "来源：WEB，与 BluRay 二选一 / Source: WEB, exclusive with BluRay"
+        type: boolean
+        default: false
+      release_bluray:
+        description: "来源：BluRay，与 WEB 二选一 / Source: BluRay, exclusive with WEB"
+        type: boolean
+        default: false
+      release_label:
+        description: "三选一，不可多选不可不选：WEB/BluRay 的区域或剪辑版本后缀，或二者均未勾选时的完整来源标识，参考 docs/RELEASE_GUIDE.md / Pick exactly one of WEB/BluRay/this field; see docs/RELEASE_GUIDE.md"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  add-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+
+      - name: Checkout subtitle-repo-actions
+        uses: actions/checkout@v4
+        with:
+          repository: MontageSubs/subtitle-repo-actions
+          path: .actions
+
+      - name: Relocate actions scripts outside the repo worktree
+        run: mv .actions /tmp/actions
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run release scaffold
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_ACTOR_ID: ${{ github.actor_id }}
+        run: |
+          ARGS=()
+          if [ "${{ github.event.inputs.release_web }}" = "true" ]; then ARGS+=(--web); fi
+          if [ "${{ github.event.inputs.release_bluray }}" = "true" ]; then ARGS+=(--bluray); fi
+          if [ -n "${{ github.event.inputs.release_label }}" ]; then ARGS+=(--label "${{ github.event.inputs.release_label }}"); fi
+          python /tmp/actions/actions/release/main.py "${ARGS[@]}"
+
+      - name: Push release scaffold
+        run: git push
