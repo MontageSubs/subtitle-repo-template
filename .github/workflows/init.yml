@@ -3,30 +3,30 @@ name: 初始化 (Initialize)
 on:
   workflow_dispatch:
     inputs:
+      edition_web:
+        description: "WEB（三选一，必选）/ WEB (pick exactly one, required)"
+        type: boolean
+        default: false
+      edition_bluray:
+        description: "BluRay（三选一，必选）/ BluRay (pick exactly one, required)"
+        type: boolean
+        default: false
+      edition_label:
+        description: "自定义来源标识，WEB/BluRay 均未选择时填写（三选一，必选，命名规则见 docs/EDITION_GUIDE.md）/ Custom source label, required only if neither WEB nor BluRay is picked (see docs/EDITION_GUIDE.md)"
+        type: string
+        default: ""
       manual_id:
-        description: "手动指定 TMDB/IMDb ID 或 URL（可选，留空则按仓库名自动搜索 TMDB）/ Optional manual TMDB/IMDb ID or URL"
+        description: "可选：手动指定 TMDB/IMDb ID 或 URL，留空则按仓库名自动搜索 TMDB / Optional: manual TMDB/IMDb ID or URL"
         type: string
         default: ""
       force_init:
-        description: "强制初始化：覆盖现有文件并重新初始化；未匹配时生成空白模板 / Force init: Overwrite files and re-initialize; generate blank template if no match"
+        description: "可选：强制初始化，覆盖现有文件并重新生成；未匹配时生成空白模板 / Optional: force re-init, overwrite existing files"
         type: boolean
         default: false
       dry_run:
-        description: "跳过剧情摘要生成 / Skip synopsis generation"
+        description: "可选：跳过剧情摘要生成 / Optional: skip synopsis generation"
         type: boolean
         default: false
-      release_web:
-        description: "来源：WEB，与 BluRay 二选一 / Source: WEB, exclusive with BluRay"
-        type: boolean
-        default: false
-      release_bluray:
-        description: "来源：BluRay，与 WEB 二选一 / Source: BluRay, exclusive with WEB"
-        type: boolean
-        default: false
-      release_label:
-        description: "三选一，不可多选不可不选：WEB/BluRay 的区域或剪辑版本后缀，或二者均未勾选时的完整来源标识，参考 docs/RELEASE_GUIDE.md / Pick exactly one of WEB/BluRay/this field; see docs/RELEASE_GUIDE.md"
-        type: string
-        default: ""
 
 permissions:
   contents: write
@@ -84,19 +84,19 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: auto-init repository metadata"
           git push
 
-      - name: Run release scaffold
+      - name: Run edition scaffold
         if: steps.orchestrate.outputs.rendered == 'true'
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_ACTOR_ID: ${{ github.actor_id }}
         run: |
           ARGS=()
-          if [ "${{ github.event.inputs.release_web }}" = "true" ]; then ARGS+=(--web); fi
-          if [ "${{ github.event.inputs.release_bluray }}" = "true" ]; then ARGS+=(--bluray); fi
-          if [ -n "${{ github.event.inputs.release_label }}" ]; then ARGS+=(--label="${{ github.event.inputs.release_label }}"); fi
-          python /tmp/actions/actions/release/main.py "${ARGS[@]}"
+          if [ "${{ github.event.inputs.edition_web }}" = "true" ]; then ARGS+=(--web); fi
+          if [ "${{ github.event.inputs.edition_bluray }}" = "true" ]; then ARGS+=(--bluray); fi
+          if [ -n "${{ github.event.inputs.edition_label }}" ]; then ARGS+=(--label="${{ github.event.inputs.edition_label }}"); fi
+          python /tmp/actions/actions/edition/main.py "${ARGS[@]}"
 
-      - name: Push release scaffold
+      - name: Push edition scaffold
         if: steps.orchestrate.outputs.rendered == 'true'
         run: git push
 
