@@ -60,7 +60,7 @@ The workflow automatically retrieves metadata for movies and series from TMDB ba
 
 <div align="center">
 
-**蒙太奇字幕组 (MontageSubs)**  
+**蒙太奇字幕社区 (MontageSubs)**  
 "用爱发电 ❤️ Powered by Love"
 
 </div>
