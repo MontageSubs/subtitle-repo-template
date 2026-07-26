@@ -48,7 +48,7 @@ jobs:
           ARGS=()
           if [ "${{ github.event.inputs.release_web }}" = "true" ]; then ARGS+=(--web); fi
           if [ "${{ github.event.inputs.release_bluray }}" = "true" ]; then ARGS+=(--bluray); fi
-          if [ -n "${{ github.event.inputs.release_label }}" ]; then ARGS+=(--label "${{ github.event.inputs.release_label }}"); fi
+          if [ -n "${{ github.event.inputs.release_label }}" ]; then ARGS+=(--label="${{ github.event.inputs.release_label }}"); fi
           python /tmp/actions/actions/release/main.py "${ARGS[@]}"
 
       - name: Push release scaffold
