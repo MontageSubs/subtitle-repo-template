@@ -85,6 +85,7 @@ jobs:
           git push
 
       - name: Run edition scaffold
+        id: edition
         if: steps.orchestrate.outputs.rendered == 'true'
         env:
           GITHUB_ACTOR: ${{ github.actor }}
@@ -98,6 +99,26 @@ jobs:
 
       - name: Push edition scaffold
         if: steps.orchestrate.outputs.rendered == 'true'
+        run: git push
+
+      - name: Run source fetch
+        if: steps.orchestrate.outputs.rendered == 'true' && github.event.inputs.dry_run != 'true'
+        env:
+          TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
+          OPENSUBTITLES_USERNAME: ${{ secrets.OPENSUBTITLES_USERNAME }}
+          OPENSUBTITLES_PASSWORD: ${{ secrets.OPENSUBTITLES_PASSWORD }}
+          OPENSUBTITLES_UA_HEAD: ${{ secrets.OPENSUBTITLES_UA_HEAD }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_ACTOR_ID: ${{ github.actor_id }}
+          MANUAL_ID: ${{ github.event.inputs.manual_id }}
+          REPO_VARS_JSON: ${{ toJson(vars) }}
+        run: |
+          ARGS=(--best-effort --edition="${{ steps.edition.outputs.edition_dir }}")
+          if [ -n "$MANUAL_ID" ]; then ARGS+=(--manual-id="$MANUAL_ID"); fi
+          python /tmp/actions/actions/source/main.py "${ARGS[@]}"
+
+      - name: Push source subtitles
+        if: steps.orchestrate.outputs.rendered == 'true' && github.event.inputs.dry_run != 'true'
         run: git push
 
       - name: Run synopsis pipeline
