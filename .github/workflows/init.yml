@@ -159,8 +159,8 @@ jobs:
         run: |
           git config user.name "$ACTOR"
           git config user.email "${ACTOR_ID}+${ACTOR}@users.noreply.github.com"
-          git fetch origin
-          git rebase "origin/$(git rev-parse --abbrev-ref HEAD)" || true
           git add docs/synopsis README.md
           git diff --cached --quiet || git commit -m "chore: generate synopsis"
+          git fetch origin
+          git rebase "origin/$(git rev-parse --abbrev-ref HEAD)" || git rebase --abort
           git push
