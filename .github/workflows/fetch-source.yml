@@ -21,7 +21,7 @@ on:
         default: ""
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   fetch-source:
@@ -45,11 +45,9 @@ jobs:
           python-version: "3.12"
 
       - name: Run source fetch
+        id: source
         env:
           TMDB_READ_ACCESS_TOKEN: ${{ secrets.TMDB_READ_ACCESS_TOKEN }}
-          OPENSUBTITLES_USERNAME: ${{ secrets.OPENSUBTITLES_USERNAME }}
-          OPENSUBTITLES_PASSWORD: ${{ secrets.OPENSUBTITLES_PASSWORD }}
-          OPENSUBTITLES_UA_HEAD: ${{ secrets.OPENSUBTITLES_UA_HEAD }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_ACTOR_ID: ${{ github.actor_id }}
           REPO_VARS_JSON: ${{ toJson(vars) }}
@@ -61,5 +59,13 @@ jobs:
           if [ -n "${{ github.event.inputs.imdb_id }}" ]; then ARGS+=(--manual-id="${{ github.event.inputs.imdb_id }}"); fi
           python /tmp/actions/actions/source/main.py "${ARGS[@]}"
 
-      - name: Push
-        run: git push
+      - name: Dispatch OpenSubtitles fetch
+        if: steps.source.outputs.opensubtitles_request != '{}'
+        env:
+          SECURE_DISPATCH_TOKEN: ${{ secrets.SECURE_DISPATCH_TOKEN }}
+          OPENSUBTITLES_REQUEST: ${{ steps.source.outputs.opensubtitles_request }}
+        run: |
+          python /tmp/actions/actions/dispatch/main.py \
+            --bridge-repo opensubtitles-bridge \
+            --event-type fetch-opensubtitles \
+            --payload "$OPENSUBTITLES_REQUEST"
