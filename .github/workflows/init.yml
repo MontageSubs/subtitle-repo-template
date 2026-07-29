@@ -80,6 +80,7 @@ jobs:
           python /tmp/actions/actions/dispatch/main.py \
             --bridge-repo org-admin-bridge \
             --event-type provision-repository \
+            --repository-id="${{ github.repository_id }}" \
             --payload "$ADMIN_REQUEST"
 
       - name: Commit README
@@ -133,6 +134,7 @@ jobs:
           python /tmp/actions/actions/dispatch/main.py \
             --bridge-repo opensubtitles-bridge \
             --event-type fetch-opensubtitles \
+            --repository-id="${{ github.repository_id }}" \
             --payload "$OPENSUBTITLES_REQUEST"
 
       - name: Run synopsis pipeline
