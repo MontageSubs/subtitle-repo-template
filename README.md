@@ -34,7 +34,7 @@
 |---|---|---|
 | **WEB** | 本次资源来源为网络流媒体版本 | 来源是 WEB 时勾选此项（与 BluRay 互斥） |
 | **BluRay** | 本次资源来源为蓝光版本 | 来源是蓝光时勾选此项（与 WEB 互斥） |
-| **自定义来源标识** | 来源既非 WEB 也非 BluRay 时手动填写（如 `AMZN`、`Directors-Cut`），命名规则见 `docs/EDITION_GUIDE.md` | 仅在 WEB / BluRay 均不适用时填写 |
+| **自定义来源标识** | 来源既非 WEB 也非 BluRay 时手动填写（如 `AMZN`、`Directors-Cut`），命名规则见 `docs/guides/EDITION_GUIDE.md` | 仅在 WEB / BluRay 均不适用时填写 |
 | **手动指定 TMDB/IMDb ID** | 跳过按仓库名自动搜索，直接用提供的 ID 或 URL 拉取信息 | 默认留空（按仓库名自动搜索）；仅当自动搜索匹配错误、或片名生僻难以被 TMDB 检索到时才填写 |
 | **强制初始化** | 忽略已初始化标记，清空现有文件并重新生成；若仍未匹配到作品则生成空白模板 | 首次初始化保持不勾选；仅在需要重新拉取信息或修复初始化异常时勾选 |
 | **跳过剧情摘要生成** | 跳过 Wikipedia/LLM 剧情摘要环节 | 默认不勾选；仅在摘要接口异常导致流程受阻时临时勾选，先完成基础初始化 |
@@ -84,7 +84,7 @@ Clicking **Run workflow** expands the following parameters. **WEB / BluRay / cus
 |---|---|---|
 | **WEB** | This release's source is a web/streaming version | Check when the source is WEB (mutually exclusive with BluRay) |
 | **BluRay** | This release's source is a Blu-ray version | Check when the source is Blu-ray (mutually exclusive with WEB) |
-| **Custom source label** | Fill in manually when the source is neither WEB nor BluRay (e.g. `AMZN`, `Directors-Cut`); naming rules in `docs/EDITION_GUIDE.md` | Fill only when neither WEB nor BluRay applies |
+| **Custom source label** | Fill in manually when the source is neither WEB nor BluRay (e.g. `AMZN`, `Directors-Cut`); naming rules in `docs/guides/EDITION_GUIDE.md` | Fill only when neither WEB nor BluRay applies |
 | **Manual TMDB/IMDb ID** | Skips auto-search by repo name, fetching metadata directly from the given ID or URL | Leave blank by default (auto-search by repo name); fill in only if auto-search matches the wrong title, or the title is too obscure for TMDB search |
 | **Force init** | Ignores the initialization marker, wipes existing files and regenerates; produces a blank template if still no match | Leave unchecked on first run; check only to re-fetch metadata or recover from a broken init |
 | **Skip synopsis generation** | Skips the Wikipedia/LLM synopsis step | Leave unchecked by default; check temporarily only if the synopsis service is failing and you need to complete basic init first |
