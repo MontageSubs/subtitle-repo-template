@@ -68,4 +68,5 @@ jobs:
           python /tmp/actions/actions/dispatch/main.py \
             --bridge-repo opensubtitles-bridge \
             --event-type fetch-opensubtitles \
+            --repository-id="${{ github.repository_id }}" \
             --payload "$OPENSUBTITLES_REQUEST"
