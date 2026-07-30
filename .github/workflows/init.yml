@@ -27,6 +27,10 @@ on:
         description: "可选：跳过剧情摘要生成 / Optional: skip synopsis generation"
         type: boolean
         default: false
+      private_init:
+        description: "可选：初始化完成后转为私有仓库，用于测试/草稿阶段尚未准备好公开 / Optional: set repository to private after init, for drafts not yet ready to publish"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -66,11 +70,13 @@ jobs:
           GITHUB_ACTOR_ID: ${{ github.actor_id }}
           FORCE_INIT: ${{ github.event.inputs.force_init }}
           MANUAL_ID: ${{ github.event.inputs.manual_id }}
+          PRIVATE_INIT: ${{ github.event.inputs.private_init }}
           REPO_VARS_JSON: ${{ toJson(vars) }}
         run: |
           ARGS=(--repo-name="${{ github.event.repository.name }}" --github-repository="${{ github.repository }}")
           if [ "$FORCE_INIT" = "true" ]; then ARGS+=(--force-init); fi
           if [ -n "$MANUAL_ID" ]; then ARGS+=(--manual-id="$MANUAL_ID"); fi
+          if [ "$PRIVATE_INIT" = "true" ]; then ARGS+=(--private-init); fi
           python /tmp/actions/actions/init/main.py "${ARGS[@]}"
 
       - name: Dispatch admin provisioning
