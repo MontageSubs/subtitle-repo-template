@@ -60,6 +60,7 @@ jobs:
           SERPSTACK_API_KEY: ${{ secrets.SERPSTACK_API_KEY }}
           GOOGLE_LLM_TOKEN: ${{ secrets.GOOGLE_LLM_TOKEN }}
           HUGGINGFACE_LLM_TOKEN: ${{ secrets.HUGGINGFACE_LLM_TOKEN }}
+          GOOGLE_TRANSLATE_API_KEY: ${{ secrets.GOOGLE_TRANSLATE_API_KEY }}
           SECURE_DISPATCH_TOKEN: ${{ secrets.SECURE_DISPATCH_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_ACTOR_ID: ${{ github.actor_id }}
