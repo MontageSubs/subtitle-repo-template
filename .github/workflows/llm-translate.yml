@@ -46,8 +46,7 @@ jobs:
 
       - name: Request LLM translation draft
         env:
-          LLM_RELAY_URL: ${{ vars.LLM_RELAY_URL }}
-          RELAY_SIGNING_SECRET: ${{ secrets.RELAY_SIGNING_SECRET }}
+          DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
           REPO_VARS_JSON: ${{ toJson(vars) }}
         run: |
           ARGS=()
